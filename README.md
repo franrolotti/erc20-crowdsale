@@ -1,13 +1,10 @@
-# Sample Hardhat Project
+# Ecosistema MALA
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Este repositorio contiene los tokens creados por la creadora artística Mala. Creadora de [MalaGala Sessions](https://www.youtube.com/@MalaGalaSessions).
 
-Try running some of the following tasks:
+Proximamente:
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
-```
+- MALA stablecoin whitepaper.
+- MUSIKITA token whitepaper.
+
+
