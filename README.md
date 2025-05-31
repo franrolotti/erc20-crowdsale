@@ -2,7 +2,7 @@
 
 ## Introducción
 
-MALA, la productora musical innovadora, presenta un programa de tokens dual que combina **gobernanza descentralizada**, **gamificación artística** y un ecosistema digital de NFTs. Los holders del token MALA no solo forman parte activa en la toma de decisiones del proyecto, sino que también acceden a beneficios exclusivos, recompensas y oportunidades de crecimiento artístico.
+MALA presenta un programa de tokens dual que combina **gobernanza descentralizada**, **gamificación artística** y un ecosistema digital de NFTs. Los holders del token MALA no solo forman parte activa en la toma de decisiones del proyecto, sino que también acceden a beneficios exclusivos, recompensas y oportunidades de crecimiento artístico.
 
 ## Tokens del Ecosistema MALA
 
