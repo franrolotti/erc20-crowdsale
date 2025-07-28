@@ -1,56 +1,53 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
 import "forge-std/Test.sol";
 import "../src/Mala.sol";
 
 contract MalaTest is Test {
-    Mala public mala;
+    Mala    public mala;
     address public owner;
     address public user;
 
+    // 1 000 000 MALA initial supply
+    uint256 constant INIT_SUPPLY = 1_000_000;
+
     function setUp() public {
-        owner = address(this);          // The test contract is the owner
-        user = address(0xBEEF);
-        mala = new Mala(owner);         // ✅ Constructor requires initialOwner
+        owner = address(this);      // test contract = owner
+        user  = address(0xBEEF);
+
+        mala = new Mala(owner, INIT_SUPPLY);
+    }
+
+    function testInitialSupplyToOwner() public view {
+        assertEq(mala.totalSupply(), INIT_SUPPLY * 1e18);
+        assertEq(mala.balanceOf(owner), INIT_SUPPLY * 1e18);
     }
 
     function testMintByOwner() public {
-        uint256 tokenId = 1;
-        uint256 amount = 100;
+        uint256 amt = 1_000;
+        mala.mint(user, amt);
 
-        mala.mint(user, tokenId, amount, "");
-
-        assertEq(mala.balanceOf(user, tokenId), amount);
-        assertEq(mala.totalSupply(tokenId), amount);
+        assertEq(mala.balanceOf(user), amt * 1e18);
+        assertEq(mala.totalSupply(), (INIT_SUPPLY + amt) * 1e18);
     }
 
     function testMintByNonOwnerShouldRevert() public {
         vm.prank(user);
         vm.expectRevert("Ownable: caller is not the owner");
-        mala.mint(user, 1, 100, "");
+        mala.mint(user, 1_000);
     }
 
     function testBurnByOwner() public {
-        uint256 tokenId = 2;
-        mala.mint(user, tokenId, 50, "");
-        mala.burn(user, tokenId, 20);
+        mala.mint(user, 2_000);
+        mala.burn(user, 500);
 
-        assertEq(mala.balanceOf(user, tokenId), 30);
-        assertEq(mala.totalSupply(tokenId), 30);
+        assertEq(mala.balanceOf(user), 1_500 * 1e18);
+        assertEq(mala.totalSupply(), (INIT_SUPPLY + 1_500) * 1e18);
     }
 
-    function testBurnExceedingAmountShouldRevert() public {
-        uint256 tokenId = 3;
-        mala.mint(user, tokenId, 10, "");
-        vm.expectRevert("Burn exceeds supply");
-        mala.burn(user, tokenId, 20);
-    }
-
-    function testExists() public {
-        uint256 tokenId = 4;
-        assertFalse(mala.exists(tokenId));
-        mala.mint(user, tokenId, 1, "");
-        assertTrue(mala.exists(tokenId));
+    function testBurnExceedingBalanceShouldRevert() public {
+        vm.expectRevert("ERC20: burn amount exceeds balance");
+        mala.burn(user, 1);
     }
 }

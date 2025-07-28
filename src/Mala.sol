@@ -1,47 +1,28 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "openzeppelin-contracts/contracts/token/ERC1155/ERC1155.sol";
+import "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
-import "./interfaces/IMala.sol";
 
-
-contract Mala is ERC1155, Ownable, IMalaEvents {
-    // Track total supply per token ID
-    mapping(uint256 => uint256) private _totalSupply;
-
-    constructor(address initialOwner)
-        ERC1155("https://myapi.com/api/item/{id}.json")
+/// @title Mala Token (ERC-20)
+/// @dev Owner-controlled mint & burn, 18 decimals
+contract Mala is ERC20, Ownable {
+    /// @param initialOwner  address that will own the contract and receive the initial supply
+    /// @param initialSupply whole-token units ( *not* wei ) that the owner receives on deployment
+    constructor(address initialOwner, uint256 initialSupply)
+        ERC20("Mala Token", "MALA")
         Ownable(initialOwner)
-    {}
-
-
-    // Return total supply for a token ID
-    function totalSupply(uint256 id) public view returns (uint256) {
-        return _totalSupply[id];
-    }
-
-
-    // Check if a token ID exists (has non-zero supply)
-    function exists(uint256 id) public view returns (bool) {
-        return _totalSupply[id] > 0;
-    }
-
-    function mint(address account, uint256 id, uint256 amount, bytes memory data)
-        public
-        onlyOwner
     {
-        _mint(account, id, amount, data);
-        _totalSupply[id] += amount;
-        emit TokenMinted(account, id, amount);
+        _mint(initialOwner, initialSupply * 10 ** decimals());
     }
 
-    function burn(address account, uint256 id, uint256 amount) public onlyOwner {
-        require(_totalSupply[id] >= amount, "Burn exceeds supply");
-        _burn(account, id, amount);
-        _totalSupply[id] -= amount;
-        emit TokenBurned(account, id, amount);
+    /// @notice Mint new tokens to an account (onlyOwner)
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount * 10 ** decimals());
     }
 
-
+    /// @notice Burn tokens from an account (onlyOwner)
+    function burn(address from, uint256 amount) external onlyOwner {
+        _burn(from, amount * 10 ** decimals());
+    }
 }
