@@ -20,16 +20,22 @@ A minimal-but-production-style token + refundable crowdsale written in **Solidit
 
 ## Repository layout
 
-├─ src/ # Solidity contracts
-│ ├─ Mala.sol
-│ └─ MalaCrowdsale.sol
-├─ test/ # Foundry unit & fuzz tests
-│ ├─ Mala.t.sol
-│ └─ MalaCrowdsale.t.sol
+
+```bash
+├─ src/                 # Solidity contracts
+│  ├─ interfaces/IMala.sol 
+│  ├─ Mala.sol
+│  └─ MalaCrowdsale.sol
+├─ test/                # Foundry unit & fuzz tests
+│  ├─ Mala.t.sol
+│  └─ MalaCrowdsale.t.sol
 ├─ script/
-│ └─ Deploy.s.sol # one-click deploy script
-├─ lib/ # external deps (OpenZeppelin, forge-std) – auto-installed
-└─ foundry.toml
+│  └─ Deploy.s.sol      # one-click deploy script
+├─ lib/                 # external deps (OpenZeppelin, forge-std) – auto-installed
+├─ broadcast/           # generated tx receipts after `forge script` (git-ignored)
+├─ foundry.toml
+└─ README.md
+```
 
 ## 🛠  Quick start
 
