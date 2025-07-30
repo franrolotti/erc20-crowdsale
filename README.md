@@ -1,66 +1,43 @@
-## Foundry
+# Mala ERC-20 Crowdsale
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A minimal-but-production-style token + refundable crowdsale written in **Solidity 0.8.20** and tested with **Foundry**.
 
-Foundry consists of:
+| Contract | Purpose |
+|----------|---------|
+| **`Mala.sol`**           | Simple ERC-20 (18 decimals) — owner-mint / owner-burn, no premine multiplication. |
+| **`MalaCrowdsale.sol`**  | • Integer-only token sales<br>• Hard-cap & soft-cap<br>• Time-window<br>• Automatic refund vault<br>• Re-entrancy guard |
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+---
 
-## Documentation
+## ✨ Features
 
-https://book.getfoundry.sh/
+* **Whole-token pricing** – contributors must send an exact multiple of `priceWei` (≈ 2 USD / token).  
+* **Refundable** – if the soft-cap isn’t reached, buyers can reclaim their ETH.  
+* **Capped** – cannot raise above `cap`.  
+* **No premine** – total supply is minted on demand by the crowdsale.
 
-## Usage
+---
 
-### Build
+## Repository layout
 
-```shell
-$ forge build
-```
+├─ src/ # Solidity contracts
+│ ├─ Mala.sol
+│ └─ MalaCrowdsale.sol
+├─ test/ # Foundry unit & fuzz tests
+│ ├─ Mala.t.sol
+│ └─ MalaCrowdsale.t.sol
+├─ script/
+│ └─ Deploy.s.sol # one-click deploy script
+├─ lib/ # external deps (OpenZeppelin, forge-std) – auto-installed
+└─ foundry.toml
 
-### Test
+## 🛠  Quick start
 
-```shell
-$ forge test
-```
+```bash
+# 1. install foundry
+curl -L https://foundry.paradigm.xyz | bash && foundryup
 
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+# 2. pull deps & run the green test suite
+forge install
+forge test -vv
 ```

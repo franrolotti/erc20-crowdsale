@@ -1,0 +1,22 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  foundry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # install Foundry
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly                 # or a pinned version
+
+      # pull libs (OZ & forge-std)
+      - name: Install dependencies
+        run: forge install --no-git
+
+      # run tests
+      - name: Run forge tests
+        run: forge test -vv
